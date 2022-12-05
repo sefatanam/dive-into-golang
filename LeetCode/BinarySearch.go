@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func main() {
@@ -96,5 +97,40 @@ func checkArrayIsSortedOrRotated(nums []int) bool {
 	} else {
 		return true
 	}
+
+}
+
+func splitArray(nums []int, m int) int {
+	startNum := 0
+	endNum := 0
+
+	for _, num := range nums {
+		startNum = int(math.Max(float64(num), float64(startNum)))
+		endNum += num
+	}
+
+	for startNum < endNum {
+		midNum := startNum + (endNum-startNum)/2
+		subArraySum := 0
+		pieces := 0
+
+		for _, num := range nums {
+			if subArraySum+num > midNum {
+				pieces++
+				subArraySum = num
+			} else {
+				subArraySum += num
+			}
+		}
+
+		if pieces > m {
+			startNum = midNum + 1
+		} else {
+			endNum = midNum
+		}
+
+	}
+
+	return endNum
 
 }
