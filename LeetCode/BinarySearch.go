@@ -7,12 +7,22 @@ import (
 
 func main() {
 
-	numbers := []int{2, 22, 33, 34, 35, 45, 56, 78, 89}
+	/*numbers := []int{2, 22, 33, 34, 35, 45, 56, 78, 89}
 	numberForPivot := []int{1, 2, 3, 4, 5, 6, 7, 1, 2, 4}
 	duplicateNumberForPivot := []int{1, 2, 3, 4, 5, 6, 6, 7, 7, 7, 8, 9, 9, 1, 2, 4}
 	fmt.Println("Search index is => ", binarySearch(numbers, 78))
 	fmt.Println("Pivot point is => ", findPivot(numberForPivot))
-	fmt.Println("Pivot point is => ", findPivotInDuplicateSortedArray(duplicateNumberForPivot))
+	fmt.Println("Pivot point is => ", findPivotInDuplicateSortedArray(duplicateNumberForPivot))*/
+
+	nestedNumber := [][]int{
+		{1, 2, 3, 4, 5},
+		{7, 8, 9, 10, 12},
+		{13, 14, 15, 16, 17},
+		{18, 19, 20, 21, 22},
+	}
+
+	result := search2dArray(nestedNumber, 4)
+	fmt.Println("Search Index => ", result)
 }
 
 func binarySearch(nums []int, target int) int {
@@ -132,5 +142,28 @@ func splitArray(nums []int, m int) int {
 	}
 
 	return endNum
+
+}
+
+func search2dArray(nums [][]int, target int) bool {
+
+	row := 0
+	col := len(nums[0]) - 1
+
+	for row < len(nums) && col >= 0 {
+		if col == 0 {
+			if nums[row][col] == target {
+				return true
+			}
+		} else if nums[row][col] == target {
+			return true
+		} else if nums[row][col] < target {
+			row++
+		} else {
+			col--
+		}
+
+	}
+	return false
 
 }
