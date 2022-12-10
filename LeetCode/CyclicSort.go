@@ -1,20 +1,61 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	//	nums := []int{9, 6, 4, 2, 3, 5, 7, 0, 1}
-	//nums2 := []int{4, 3, 2, 7, 8, 2, 3, 1}
+	//nums := []int{9, 0, 4, 2, 3, 5, 7, 0, 1}
+	//fmt.Println(findAllMissingNumber(nums))
 
-	// fmt.Println(missingNumber(nums))
-	// fmt.Println(nums2)
-
-	//fmt.Println(findAllMissingNumber(nums2))
-	fmt.Println(findAllDuplicate([]int{4, 3, 2, 7, 8, 2, 3, 1}))
+	nums := []int{3, -1, 4, 1, -1}
+	res := firstMissingPositive(nums)
+	fmt.Println(res)
 }
 
-func missingNumber(nums []int) int {
+/*
+Main base of Cyclic sort [ T(O(n), M(O(1) ]
+*/
+func cyclicSort(nums []int) {
+	index := 0
+	for index < len(nums) {
+		correctIndex := nums[index] - 1
+		if nums[correctIndex] != nums[index] {
+			swap(nums, index, correctIndex)
+		} else {
+			index++
+		}
+	}
+}
 
+/*
+*
+Find missing number using cyclic sort
+*/
+func missingNumber(nums []int) int {
+	index := 0
+	for index < len(nums) {
+		correctIndex := nums[index] // As if element can be 0 or missing so current element is correct index
+		if nums[index] < len(nums) && nums[correctIndex] != nums[index] {
+			swap(nums, index, correctIndex)
+		} else {
+			index++
+		}
+	}
+	for i, el := range nums {
+		if i != el {
+			return i
+		}
+	}
+	return len(nums)
+}
+
+/*
+*
+Find all missing number using cycle sort
+*/
+func findAllMissingNumber(nums []int) []int {
+	var result []int
 	index := 0
 	for index < len(nums) {
 		correctIndex := nums[index]
@@ -27,34 +68,14 @@ func missingNumber(nums []int) int {
 
 	for i, el := range nums {
 		if el != i {
-			return i
-		}
-	}
-	return len(nums)
-}
-
-func findAllMissingNumber(nums []int) []int {
-	var result []int
-	index := 0
-	for index < len(nums) {
-		correctIndex := nums[index] - 1
-		if nums[index] != nums[correctIndex] {
-			swap(nums, index, correctIndex)
-		} else {
-			index++
-		}
-	}
-
-	for i, el := range nums {
-		if el != i+1 {
-			result = append(result, i+1)
+			result = append(result, i)
 		}
 	}
 
 	return result
 }
 
-// 1,3,4,2,2 => 2
+// 4,3,1,2,2 => 2
 func findDuplicate(nums []int) int {
 	index := 0
 	for index < len(nums) {
@@ -69,7 +90,6 @@ func findDuplicate(nums []int) int {
 			index++
 		}
 	}
-
 	return -1
 
 }
@@ -97,6 +117,59 @@ func findAllDuplicate(nums []int) []int {
 
 }
 
+/*
+*
+Find errors of nums [repeated number , missing number]
+1,2,2,4,5 => [2,3]
+*/
+func findErrorNums(nums []int) []int {
+	var result []int
+	index := 0
+	for index < len(nums) {
+		correctIndex := nums[index] - 1
+		if nums[correctIndex] != nums[index] {
+			swap(nums, index, correctIndex)
+		} else {
+			index++
+		}
+	}
+
+	for i, num := range nums {
+		if num != i+1 {
+			result = append(result, nums[i], i+1)
+			return result
+		}
+	}
+
+	return result
+}
+
+/*
+*
+First missing positive
+*/
+func firstMissingPositive(nums []int) int {
+	index := 0
+	for index < len(nums) {
+		correctIndex := nums[index] - 1 // As if element can be 0 or missing so current element is correct index
+		if nums[index] > 0 && nums[index] <= len(nums) && nums[correctIndex] != nums[index] {
+			swap(nums, index, correctIndex)
+		} else {
+			index++
+		}
+	}
+	for i, el := range nums {
+		if 1+i != el {
+			return 1 + i
+		}
+	}
+	return 1 + len(nums)
+}
+
+/*
+*
+Swap two number in array
+*/
 func swap(nums []int, fromIndex int, toIndex int) {
 	temp := nums[fromIndex]
 	nums[fromIndex] = nums[toIndex]
