@@ -20,9 +20,9 @@ You will see the raw codes that I will write in Go. Create issue, gives me motiv
 
    #### Features
 
-    - GetTodos
-    - GetTodo****************
-    - PostTodo
+   - GetTodos
+   - GetTodo
+   - PostTodo
     - ToggleStatus
 
    #### How to run
