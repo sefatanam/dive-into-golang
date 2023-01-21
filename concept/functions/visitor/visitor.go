@@ -33,7 +33,7 @@ func (v *Visitor) Left() {
 	v.active -= 1
 }
 
-func (v Visitor) ActiveVisitors() uint {
+func (v *Visitor) ActiveVisitors() uint {
 	return v.active
 }
 
