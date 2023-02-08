@@ -28,6 +28,7 @@ const (
 	openaiAPI = "https://api.openai.com/v1/completions"
 	model     = "text-davinci-002"
 	prompt    = "I am a go lang dev but I have no"
+	API_KEY   = "sk-xxxxxxxxxxxxxxxxxxxxx"
 )
 
 func main() {
