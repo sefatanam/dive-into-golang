@@ -2,8 +2,13 @@ package main
 
 import "fmt"
 
+func printArray(arr [][]int) {
+	for _, row := range arr {
+		fmt.Println(row)
+	}
+}
 func main() {
-	twoDArray := [][]int{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}}
+	twoDArray := [][]int{{1, 2, 3, 4, 5}, {6, 7, 8, 9, 10}, {11, 12, 13, 14, 15}, {16, 17, 18, 19, 20}, {21, 22, 23, 24, 25}}
 
 	// Print the initial array
 	fmt.Println("Initial array:")
@@ -18,67 +23,28 @@ func main() {
 }
 
 func rotateArray(arr *[][]int) {
-	/*// Get the number of rows and columns in the array
-	rows := len(arr)
-	cols := len(arr[0])
-
-	// Create a new array with the rows and columns swapped
-	rotated := make([][]int, cols)
-	for i := range rotated {
-		rotated[i] = make([]int, rows)
-		for j := range rotated[i] {
-			rotated[i][j] = arr[rows-j-1][i]
-		}
-	}
-	return rotated*/
-
-	/*	rows := len(*arr)
-		cols := len((*arr)[0])
-
-		for i := 0; i < rows/2; i++ {
-
-			for j := 0; j < cols-i-1; j++ {
-				temp := (*arr)[i][j]
-				(*arr)[i][j] = (*arr)[rows-j-1][i]
-				(*arr)[rows-j-1][i] = (*arr)[rows-i-1][cols-j-1]
-				(*arr)[rows-i-1][cols-j-1] = (*arr)[j][cols-i-1]
-				(*arr)[j][cols-i-1] = temp
-
-				fmt.Println("The J =", j)
-				printArray((*arr))
-
-			}
-			fmt.Println("The I completed:", i)
-			printArray((*arr))
-		}*/
 
 	// Get the number of rows and columns in the array
-	rows := len(*arr)
-	cols := len((*arr)[0])
+	rows := len(*arr) - 1
+	cols := len((*arr)[0]) - 1
 
 	// Swap each element in the array individually
 	for i := 0; i < rows/2; i++ {
-		for j := i; j < cols-i-1; j++ {
+		for j := i; j < cols-i; j++ {
 			temp := (*arr)[i][j]
 			/*Top by left*/
-			(*arr)[i][j] = (*arr)[rows-j-1][i]
+			(*arr)[i][j] = (*arr)[rows-j][i]
 			/*left by bottom*/
-			(*arr)[rows-j-1][i] = (*arr)[rows-i-1][cols-j-1]
+			(*arr)[rows-j][i] = (*arr)[rows-i][cols-j]
 			/*bottom by right*/
-			(*arr)[rows-i-1][cols-j-1] = (*arr)[j][cols-i-1]
+			(*arr)[rows-i][cols-j] = (*arr)[j][cols-i]
 			/*right by top */
-			(*arr)[j][cols-i-1] = temp
+			(*arr)[j][cols-i] = temp
 
 			fmt.Println("The J =", j)
 			printArray((*arr))
 		}
 		fmt.Println("The I completed:", i)
 		printArray((*arr))
-	}
-}
-
-func printArray(arr [][]int) {
-	for _, row := range arr {
-		fmt.Println(row)
 	}
 }
