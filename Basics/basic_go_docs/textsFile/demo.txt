@@ -1,0 +1,3 @@
+Hello, My friend {{.Name}}
+****Greetings, from Bangladesh****
+Your next destination is {{.Place}}.
