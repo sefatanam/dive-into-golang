@@ -1,12 +1,43 @@
 {{ template "base" .}}
 
+{{define "css"}}
+<style>
+    .background {
+        background-image: url("/static/home/pet-dog.webp");
+        height: 50dvh;
+        background-size: cover;
+        position: relative;
+        z-index:1;
+    }
+
+    .background::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index:-1;
+    }
+
+
+    .heading {
+        font-size: 6em;
+        padding: 0 1em;
+        text-align: center;
+        color: white;
+    }
+</style>
+
+{{end}}
 
 {{define "content"}}
 
-<div class="container">
-    <div class="row">
+<div class="container background">
+    <div class="row" style="height:50vh; align-items:end">
         <div class="col">
-            <h3>Go find a Pet!</h3>
+            <h3 class="heading">Go find a Pet</h3>
         </div>
     </div>
 </div>

@@ -15,6 +15,10 @@ func (app *application) routes() http.Handler {
 	mux.Use(middleware.Recoverer)
 	mux.Use(middleware.Timeout(30 * time.Second))
 
+	// file server
+	fileServer := http.FileServer(http.Dir("./static"))
+	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
+
 	// Using Routes
 	mux.Get("/", app.ShowHome)
 	mux.Get("/{page}", app.ShowPage)
