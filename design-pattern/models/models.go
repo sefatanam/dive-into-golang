@@ -20,25 +20,25 @@ func New(conn *sql.DB) *Models {
 }
 
 type DogBreed struct {
-	AlternateNames   string `json:"alternate_names"`
-	Lifespan         int    `json:" ifespan"`
-	AverageWeight    int    `json:"average_weight"`
+	ID               int    `json:"id"`
 	Breed            string `json:"breed"`
 	Details          string `json:"details"`
-	GeographicOrigin string `json:"geographic_origin"`
-	ID               int    `json:"id"`
+	AlternateNames   string `json:"alternate_names"`
+	AverageWeight    int    `json:"average_weight"`
+	Lifespan         int    `json:"lifespan"`
 	WeightHighLbs    int    `json:"weight_high_lbs"`
+	GeographicOrigin string `json:"geographic_origin"`
 	WeightLowLbs     int    `json:"weight_low_lbs"`
 }
 
 type CatBreed struct {
-	AlternateNames   string `json:"alternate_names"`
-	Lifespan         int    `json:" lifespan"`
-	AverageWeight    int    `json:"average_weight"`
+	ID               int    `json:"id"`
 	Breed            string `json:"breed"`
+	AlternateNames   string `json:"alternate_names"`
+	Lifespan         int    `json:"lifespan"`
+	AverageWeight    int    `json:"average_weight"`
 	Details          string `json:"details"`
 	GeographicOrigin string `json:"geographic_origin"`
-	ID               int    `json:"id"`
 	WeightHighLbs    int    `json:"weight_high_lbs"`
 	WeightLowLbs     int    `json:"weight_low_lbs"`
 }
