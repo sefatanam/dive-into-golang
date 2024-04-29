@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"design-pattern/models"
 	"flag"
 	"fmt"
 	"html/template"
@@ -16,6 +17,7 @@ type application struct {
 	templateMap map[string]*template.Template
 	config      appConfig
 	DB          *sql.DB
+	Models      models.Models
 }
 
 type appConfig struct {
@@ -49,6 +51,9 @@ func main() {
 		WriteTimeout:      30 * time.Second,
 		ReadHeaderTimeout: 30 * time.Second,
 	}
+
+	app.Models = *models.New(db)
+
 	fmt.Println("Server listening on port", port)
 	err = srv.ListenAndServe()
 	if err != nil {
