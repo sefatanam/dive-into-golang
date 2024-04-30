@@ -1,7 +1,7 @@
 package main
 
 import (
-	"design-pattern/models"
+	"design-pattern/configuration"
 	"flag"
 	"fmt"
 	"html/template"
@@ -15,8 +15,7 @@ const port = "localhost:4000"
 type application struct {
 	templateMap map[string]*template.Template
 	config      appConfig
-	// DB          *sql.DB
-	Models models.Models
+	App         *configuration.Application
 }
 
 type appConfig struct {
@@ -33,14 +32,11 @@ func main() {
 	flag.StringVar(&app.config.dsn, "dsn", "mariadb:myverysecretpassword@tcp(localhost:3306)/breeders?parseTime=true&tls=false&collation=utf8_unicode_ci&timeout=5s", "DSN")
 	flag.Parse()
 
-	// get database
-
 	db, err := initMySQLDB(app.config.dsn)
 
 	if err != nil {
 		log.Panic(err)
 	}
-	// app.DB = db
 
 	srv := &http.Server{
 		Addr:              port,
@@ -51,7 +47,7 @@ func main() {
 		ReadHeaderTimeout: 30 * time.Second,
 	}
 
-	app.Models = *models.New(db)
+	app.App = configuration.New(db)
 
 	fmt.Println("Server listening on port", port)
 	err = srv.ListenAndServe()
