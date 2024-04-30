@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const port = ":4000"
+const port = "localhost:4000"
 
 type application struct {
 	templateMap map[string]*template.Template
