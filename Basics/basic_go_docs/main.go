@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "example.com/greetings/abstract"
 
+func main() {
+	abstract.TestClient()
 }
