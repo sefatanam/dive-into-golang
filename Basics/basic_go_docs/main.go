@@ -1,7 +1,9 @@
 package main
 
-import "example.com/greetings/abstract"
+import (
+	"example.com/greetings/adapter"
+)
 
 func main() {
-	abstract.TestClient()
+	adapter.TestAdapter()
 }
