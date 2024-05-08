@@ -20,7 +20,9 @@ func main() {
 	// Get a worker pool.
 	wp := streamer.New(videoQueue, numWorkers)
 	fmt.Println(wp)
+
 	// Start the worker pool.
+	wp.Run()
 
 	// Create 4 videos to send to the worker pool
 
