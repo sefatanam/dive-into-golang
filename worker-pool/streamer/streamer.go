@@ -1,5 +1,12 @@
 package streamer
 
+import (
+	"fmt"
+	"path"
+	"path/filepath"
+	"strings"
+)
+
 type ProcessingMessage struct {
 	ID         int
 	Successful bool
@@ -49,7 +56,50 @@ func (vd *VideoDispatcher) NewVideo(id int, input, output, encType string, notif
 }
 
 func (v *Video) encode() {
+	var fileName string
+	switch v.EncodingType {
 
+	case "mp4":
+		// encode video
+		name, err := v.encodeToMp4()
+		if err != nil {
+			v.sendToNotifyChan(false, "", fmt.Sprintf("encode failed for %d, %s", v.ID, err.Error()))
+			return
+		}
+
+		fileName = fmt.Sprintf("%s.mp4", name)
+		// send info to the notify chan
+
+	default:
+		v.sendToNotifyChan(false, "", fmt.Sprintf("error processing for %d invalid encoding type", v.ID))
+	}
+
+	v.sendToNotifyChan(true, fileName, fmt.Sprintf("video id  %d processed and saved as %s", v.ID, fmt.Sprintf("%s/%s", v.OutputDir, fileName)))
+}
+
+func (v *Video) encodeToMp4() (string, error) {
+	baseFileName := ""
+	if !v.Options.RenameOutput {
+		// get base file name
+		b := path.Base(v.InputFile)
+		baseFileName = strings.TrimSuffix(b, filepath.Ext(b))
+	}
+
+	err := v.Encoder.Engine.EncodeToMP4(v, baseFileName)
+	if err != nil {
+		return "", err
+	}
+
+	return baseFileName, nil
+}
+
+func (v *Video) sendToNotifyChan(successful bool, fileName, message string) {
+	v.NotifyChannel <- ProcessingMessage{
+		ID:         v.ID,
+		Successful: successful,
+		Message:    message,
+		OutputFile: fileName,
+	}
 }
 
 func New(jobQueue chan VideoProcessingJob, maxWorkers int) *VideoDispatcher {
