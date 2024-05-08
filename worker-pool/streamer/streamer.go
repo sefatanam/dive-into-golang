@@ -43,7 +43,7 @@ func (vd *VideoDispatcher) NewVideo(id int, input, output, encType string, notif
 	if ops == nil {
 		ops = &VideoOptions{}
 	}
-
+	fmt.Println("c.newVideo():new video created", id, input)
 	return Video{
 		ID:            id,
 		InputFile:     input,
@@ -60,25 +60,29 @@ func (v *Video) encode() {
 	switch v.EncodingType {
 
 	case "mp4":
-		// encode video
+		fmt.Println("v.encode():about to encde to mp4", v.ID)
+
 		name, err := v.encodeToMp4()
 		if err != nil {
 			v.sendToNotifyChan(false, "", fmt.Sprintf("encode failed for %d, %s", v.ID, err.Error()))
 			return
 		}
-
 		fileName = fmt.Sprintf("%s.mp4", name)
-		// send info to the notify chan
-
 	default:
+		fmt.Println("v.encode(): error trying to encode video", v.ID)
+
 		v.sendToNotifyChan(false, "", fmt.Sprintf("error processing for %d invalid encoding type", v.ID))
+		return
 	}
+	fmt.Println("v.encode(): sending success message for video id", v.ID, "to notify channel")
 
 	v.sendToNotifyChan(true, fileName, fmt.Sprintf("video id  %d processed and saved as %s", v.ID, fmt.Sprintf("%s/%s", v.OutputDir, fileName)))
 }
 
 func (v *Video) encodeToMp4() (string, error) {
 	baseFileName := ""
+	fmt.Println("v.encodeToMp4(): about to try encode video", v.ID)
+
 	if !v.Options.RenameOutput {
 		// get base file name
 		b := path.Base(v.InputFile)
@@ -89,6 +93,7 @@ func (v *Video) encodeToMp4() (string, error) {
 	if err != nil {
 		return "", err
 	}
+	fmt.Println("v.encodeToMp4(): successfully encoded", v.ID)
 
 	return baseFileName, nil
 }
