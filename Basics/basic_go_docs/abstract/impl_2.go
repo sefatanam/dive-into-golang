@@ -8,6 +8,26 @@ type IDoor interface {
 	getColor() string
 }
 
+type DoorFittingExpert interface {
+	getDescription() string
+}
+
+type Welder struct {
+	comment string
+}
+
+func (w *Welder) getDescription() string {
+	return w.comment
+}
+
+type Carpenter struct {
+	comment string
+}
+
+func (c *Carpenter) getDescription() string {
+	return c.comment
+}
+
 type WoodenDoorx struct {
 	width  int
 	height int
@@ -48,6 +68,7 @@ func (md *MetalDoor) getColor() string {
 
 type DoorInterface interface {
 	MakeDoor(width, height int, color string) IDoor
+	MakeFittingExpert() DoorFittingExpert
 }
 
 type WoodenDoorFactory struct{}
@@ -61,6 +82,12 @@ func (wdf *WoodenDoorFactory) MakeDoor(width, height int, color string) IDoor {
 	}
 }
 
+func (wdf *WoodenDoorFactory) MakeFittingExpert() DoorFittingExpert {
+	return &Carpenter{
+		comment: "I can only fit wood door.",
+	}
+}
+
 func (mdf *MetalDoorFactory) MakeDoor(width, height int, color string) IDoor {
 	return &MetalDoor{
 		width:  width,
@@ -68,16 +95,21 @@ func (mdf *MetalDoorFactory) MakeDoor(width, height int, color string) IDoor {
 		color:  color,
 	}
 }
-
+func (wdf *MetalDoorFactory) MakeFittingExpert() DoorFittingExpert {
+	return &Welder{
+		comment: "I can only fit iron door.",
+	}
+}
 func RunImpl2() {
 	var woodDoorFactory WoodenDoorFactory
 	woodDoor := woodDoorFactory.MakeDoor(1, 1, "brown")
-	woodDoor.(*WoodenDoorx).detail()
 
 	fmt.Println(woodDoor)
+	fmt.Println(woodDoorFactory.MakeFittingExpert())
 
 	var metalDoorFactory MetalDoorFactory
 	metalDoor := metalDoorFactory.MakeDoor(1, 1, "red")
 	fmt.Println(metalDoor)
+	fmt.Println(metalDoorFactory.MakeFittingExpert())
 
 }

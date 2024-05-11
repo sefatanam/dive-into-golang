@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	abstract.RunMain()
+	abstract.RunImpl2()
 }
