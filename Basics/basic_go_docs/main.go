@@ -1,9 +1,9 @@
 package main
 
 import (
-	"example.com/greetings/abstract"
+	"example.com/greetings/builder"
 )
 
 func main() {
-	abstract.RunImpl2()
+	builder.RunBuilder()
 }
