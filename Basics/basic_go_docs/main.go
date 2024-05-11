@@ -1,9 +1,9 @@
 package main
 
 import (
-	"example.com/greetings/adapter"
+	"example.com/greetings/abstract"
 )
 
 func main() {
-	adapter.TestAdapter()
+	abstract.RunMain()
 }
