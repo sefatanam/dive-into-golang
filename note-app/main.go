@@ -1,45 +1,119 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+)
+
+type Person struct {
+	Name    string `json:"name"`
+	Age     string `json:"age"`
+	Country string `json:"country"`
+}
+
+func (person Person) WriteUserInput() error {
+	jsonData, err := json.Marshal(person)
+	if err != nil {
+		return err
+	}
+
+	file, err := os.Create(person.Name + ".txt")
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+
+	_, err = file.Write(jsonData)
+
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func main() {
 
-	/* var array [5]int
+	person := Person{}
+	fmt.Printf("Enter Your Name: ")
+	person.Name = GetUserInput()
 
-	array[0] = 1
-	array[2] = 2
-	array[4] = 3
-	array[3] = 45
-	array[1] = 455
+	fmt.Printf("Enter Your Age: ")
+	person.Age = GetUserInput()
 
-	for i := 0; i < len(array); i++ {
-		fmt.Println(array[i])
-	} */
+	fmt.Printf("Enter Your Country: ")
+	person.Country = GetUserInput()
 
-	var twoDarray [2][3]int
+	err := person.WriteUserInput()
 
-	/* First row */
-	twoDarray[0][0] = 1
-	twoDarray[0][1] = 2
-	twoDarray[0][2] = 3
+	if err != nil {
+		log.Println(err)
+	}
 
-	/* Second row */
-	twoDarray[1][0] = 3
-	twoDarray[1][1] = 4
-	twoDarray[1][2] = 5
+	http.HandleFunc("/detail", GetUserDetailRequest)
+	http.HandleFunc("/submit", PostUserDetailRequest)
+	err = http.ListenAndServe("localhost:3000", nil)
 
-	rowLen := len(twoDarray)
-	colLen := len(twoDarray[0])
+	if err != nil {
+		log.Println(err)
+	}
+}
 
-	/* fmt.Println("ROW:", rowLen)
-	fmt.Println("COL:", colLen) */
+func GetUserInput() string {
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	return scanner.Text()
+}
 
-	for i := 0; i < rowLen; i++ {
-		for j := 0; j < colLen; j++ {
-			fmt.Print(twoDarray[i][j], " ")
-		}
+func GetUserDetailRequest(w http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("name")
 
-		fmt.Print("\n")
+	if name == "" {
+		http.Error(w, "name query param is missing", http.StatusBadRequest)
+		return
+	}
+
+	jsonData, err := os.ReadFile(name + ".txt")
+	if err != nil {
+		http.Error(w, "error in reading file", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonData)
+}
+
+func PostUserDetailRequest(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "request not allowed", http.StatusBadRequest)
+		return
+	}
+
+	name := r.URL.Query().Get("name")
+
+	if name == "" {
+		http.Error(w, "name query param is missing", http.StatusBadRequest)
+		return
+	}
+
+	var person Person
+	err := json.NewDecoder(r.Body).Decode(&person)
+
+	if err != nil {
+		http.Error(w, "cannot parse request body", http.StatusBadRequest)
+		return
+	}
+	log.Println(person)
+
+	err = person.WriteUserInput()
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 }
