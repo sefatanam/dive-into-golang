@@ -119,7 +119,7 @@ func main() {
 	} */
 
 	// Non Blocking Channel
-	messages := make(chan string)
+	/* messages := make(chan string)
 
 	signals := make(chan bool)
 
@@ -154,6 +154,72 @@ func main() {
 		}
 	default:
 		fmt.Println("no activity")
+	} */
+
+	/* // Tickers
+
+	ticker := time.NewTicker(1 * time.Second)
+	done := make(chan bool)
+
+	go func() {
+		for {
+			select {
+			case <-done:
+				return
+			case t := <-ticker.C:
+				fmt.Println("tick at", t)
+			}
+		}
+	}()
+
+	time.Sleep(10 * time.Second)
+	ticker.Stop()
+	done <- true
+
+	fmt.Println("Timer stop") */
+
+	/* // Worker pool
+
+	const numJobs = 5
+	jobs := make(chan int, numJobs)
+	results := make(chan int, numJobs)
+
+	fmt.Println("** Spinning Up Worker Thread **")
+	for w := 1; w <= 3; w++ {
+		fmt.Println("Going for worker fn....", w)
+		go Worker(w, jobs, results)
+		fmt.Println("Going for worker fn....done")
 	}
 
+	fmt.Println("** Job Channel Value Asssigning **")
+	for j := 1; j <= numJobs; j++ {
+		fmt.Println("going through jobs <-", j)
+		jobs <- j
+		fmt.Println("going through jobs <- done", j)
+	}
+
+	fmt.Println("Close job..")
+	close(jobs)
+	fmt.Println("Close job..END")
+
+	fmt.Println("** Calling Worker Thread to Spinning UP the Works **")
+	for r := 1; r <= numJobs; r++ {
+		fmt.Println("Results loop", r)
+		<-results
+		fmt.Println("Result found..: ", r)
+	} */
+
+	// Worker Pool 2
+
+	WorkerPool()
 }
+
+/* func Worker(id int, jobs <-chan int, results chan<- int) {
+	for j := range jobs {
+		fmt.Println("worker", id, "started  job", j)
+		time.Sleep(time.Duration(id) * time.Second)
+		fmt.Println("worker", id, "finished job", j)
+		results <- id
+	}
+}
+*/
