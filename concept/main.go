@@ -1,6 +1,7 @@
 package main
 
 import (
+	"concept/channel"
 	"fmt"
 )
 
@@ -211,7 +212,25 @@ func main() {
 
 	// Worker Pool 2
 
-	WorkerPool()
+	// WorkerPool()
+
+	// Basic Channel
+	channel.MainChannel()
+
+	// newNums := channel.NewNumbers()
+	// newNums.Start()
+	// done := make(chan bool)
+	// for i := 1; i <= 10; i++ {
+	// 	go func(i int) {
+	// 		newNums.NumsChan <- i
+	// 		done <- true
+	// 	}(i)
+	// }
+	// for i := 1; i <= 10; i++ {
+	// 	<-done
+	// }
+
+	// close(newNums.NumsChan)
 }
 
 /* func Worker(id int, jobs <-chan int, results chan<- int) {
