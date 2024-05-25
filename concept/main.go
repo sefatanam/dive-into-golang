@@ -1,6 +1,7 @@
 package main
 
 import (
+	"concept/articles"
 	"concept/channel"
 	"fmt"
 )
@@ -231,6 +232,9 @@ func main() {
 	// }
 
 	// close(newNums.NumsChan)
+
+	// Articles Code
+	articles.RunArticles()
 }
 
 /* func Worker(id int, jobs <-chan int, results chan<- int) {

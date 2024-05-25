@@ -7,21 +7,16 @@ import (
 )
 
 func MainChannel() {
-	log.Println("Program execution is start")
+	// log.Println("Program execution is start")
 
-	ch := make(chan int, 2)
-	time.Sleep(5 * time.Second)
-	ch <- 2
-	time.Sleep(5 * time.Second)
-	ch <- 3
-	close(ch)
-	/* go func() {
+	/* ch := make(chan int, 2)
+	go func() {
 		ch <- 42
 	}()
 	go func() {
 		ch <- 99
 	}()
-	*/
+
 	for {
 		val, ok := <-ch
 		if !ok {
@@ -29,31 +24,34 @@ func MainChannel() {
 			break
 		}
 		log.Println(val)
-	}
+	} */
 
-	/* ch := make(chan string)
+	ch := make(chan string)
 	ch2 := make(chan string)
 	ch3 := make(chan string)
 	log.Println("Program execution is start")
 	go func() {
+		time.Sleep(3 * time.Second)
 		ch <- "1 :: ONE"
-		close(ch)
+		fmt.Println("1")
 	}()
 	go func() {
-		time.Sleep(4 * time.Second)
+		time.Sleep(2 * time.Second)
 		ch2 <- "2 :: TWO"
-		close(ch2)
+		fmt.Println("2")
+
 	}()
 	go func() {
 		ch3 <- "3 :: THREE"
-		close(ch3)
+		fmt.Println("3")
+
 	}()
 
+	// log.Println(<-ch3)
 	log.Println(<-ch3)
-	log.Println(<-ch)
-	log.Println(<-ch2)
+	// log.Println(<-ch2)
 
-	log.Println("Program execution is complete") */
+	log.Println("Program execution is complete")
 }
 
 func SendMessage(message chan<- string) {
