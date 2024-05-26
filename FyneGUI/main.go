@@ -24,17 +24,17 @@ var appsList = [][]string{
 }
 
 var AppInfos = []lib.App{
-	lib.AppInfo{Id: 1, Name: "WebStrom", Source: "dir/cmd", Type: "APP"},
-	lib.AppInfo{Id: 2, Name: "WebStrom", Source: "dir/cmd", Type: "APP"},
-	lib.AppInfo{Id: 3, Name: "WebStrom", Source: "dir/cmd", Type: "APP"},
+	lib.AppInfo{Id: 1, Name: "WebStrom", Source: "dir/cmd"},
+	lib.AppInfo{Id: 2, Name: "WebStrom", Source: "dir/cmd"},
+	lib.AppInfo{Id: 3, Name: "WebStrom", Source: "dir/cmd"},
 }
 
 var apps = []lib.App{
-	lib.AppInfo{Id: 1, Name: "App One", Source: "Source A", Type: "Type X"},
-	lib.AppInfo{Id: 2, Name: "App Two", Source: "Source B", Type: "Type Y"},
-	lib.AppInfo{Id: 3, Name: "App Three", Source: "Source C", Type: "Type Z"},
-	lib.AppInfo{Id: 4, Name: "App Four", Source: "Source D", Type: "Type X"},
-	lib.AppInfo{Id: 5, Name: "App Five", Source: "Source E", Type: "Type Y"},
+	lib.AppInfo{Id: 1, Name: "App One", Source: "Source A"},
+	lib.AppInfo{Id: 2, Name: "App Two", Source: "Source B"},
+	lib.AppInfo{Id: 3, Name: "App Three", Source: "Source C"},
+	lib.Script{Id: 4, Name: "Script", Source: "./hello"},
+	lib.Script{Id: 5, Name: "My Works", Source: "./works"},
 }
 
 func MakeLabel(name string) *widget.Label {
@@ -62,7 +62,7 @@ func main() {
 
 	appsTable := widget.NewTable(
 		func() (int, int) {
-			return len(apps) + 1, 5 // +1 for header row, 5 columns (Id, Name, Source, Type, Actions)
+			return len(apps) + 1, 4 // +1 for header row, 5 columns (Id, Name, Source, Type, Actions)
 		},
 		func() fyne.CanvasObject {
 			return container.NewHBox(widget.NewLabel("wide content"))
@@ -77,24 +77,21 @@ func main() {
 				case 2:
 					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel("Source")}
 				case 3:
-					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel("Type")}
-				case 4:
 					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel("Actions")}
 				}
 			} else { // Data rows
 				app := apps[i.Row-1] // Adjust index because of header row
 				switch i.Col {
 				case 0:
-					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(app.GetDetail())}
+					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(app.GetDetail("Id"))}
 				case 1:
-					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(app.GetDetail())}
+					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(app.GetDetail("Name"))}
 				case 2:
-					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(app.GetDetail())}
+					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(app.GetDetail("Source"))}
 				case 3:
-					o.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(app.GetDetail())}
-				case 4:
 					startIcon := widget.NewButtonWithIcon("", theme.MediaPlayIcon(), func() {
 						fmt.Printf("Start action for row %d\n", i.Row)
+						app.Run()
 					})
 					closeIcon := widget.NewButtonWithIcon("", theme.CancelIcon(), func() {
 						fmt.Printf("Close action for row %d\n", i.Row)
@@ -135,14 +132,19 @@ func main() {
 	appsTable.SetColumnWidth(1, 150) // Set a fixed width for the second column
 	appsTable.SetColumnWidth(2, 250) // Set a fixed width for the third column
 	appsTable.SetColumnWidth(3, 100) // Set a fixed width for the action column
-	appsTable.SetColumnWidth(3, 100) // Set a fixed width for the action column
 
 	// Scrollable appsTable with Fixed Height
 	scrollContainer := container.NewVScroll(appsTable)
 	scrollContainer.SetMinSize(fyne.NewSize(600, 200)) // Set fixed height for the scrollable appsTable
 
 	// Footer with "Start All" Button
-	startAllButton := MakeButton("Start All")
+	startAllButton := widget.NewButton("Start All", func() {
+		for _, app := range apps {
+
+			app.Run()
+		}
+
+	})
 	footer := container.NewHBox(layout.NewSpacer(), startAllButton)
 
 	// Main Container
