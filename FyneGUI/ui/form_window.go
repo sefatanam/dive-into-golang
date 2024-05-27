@@ -2,7 +2,7 @@ package ui
 
 import (
 	"fmt"
-	"fynegui/lib"
+	"fynegui/constant"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -11,13 +11,20 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func ShowFormWindow(windowRef fyne.Window) {
+func ShowFormWindow(previousWindowRef fyne.Window) {
+
+	previousWindowRef.Hide()
+
+	newWindow := fyne.CurrentApp().NewWindow("Submit Script")
+	newWindow.Resize(fyne.NewSize(constant.Width, constant.Height*1.2))
 
 	nameEntry := widget.NewEntry()
 	nameEntry.SetPlaceHolder("Enter script name")
 
 	sourceEntry := widget.NewEntry()
-	sourceEntry.SetPlaceHolder("Selct file path")
+	sourceEntry.SetPlaceHolder("Browse file path")
+	sourceEntry.TextStyle.Bold = true
+	sourceEntry.TextStyle.Monospace = true
 	sourceEntry.Disable()
 
 	sourceButton := widget.NewButton("Browse", func() {
@@ -27,27 +34,44 @@ func ShowFormWindow(windowRef fyne.Window) {
 			} else {
 				sourceEntry.SetText(string(file.Path()))
 			}
-		}, windowRef)
+		}, newWindow)
 
 		fileDialog.Show()
 
 	})
 
+	sourceContainer := container.New(layout.NewFormLayout(), sourceButton, sourceEntry)
+
 	form := container.NewVBox(
-		container.NewVBox(widget.NewLabel("Name:"), nameEntry),
+		container.NewVBox(widget.NewLabel("Name"), nameEntry),
 		layout.NewSpacer(),
-		container.NewVBox(widget.NewLabel("Select Path:"), sourceEntry),
-		container.NewVBox(sourceButton),
+		widget.NewLabel("Browse Path"),
+		sourceContainer,
+		layout.NewSpacer(),
 	)
-
-	dialog.ShowCustomConfirm("Submit Script", "Submit", "Cancel", form, func(b bool) {
-		if b {
-			script := lib.Script{
-				Name:   nameEntry.Text,
-				Source: sourceEntry.Text,
-			}
-			fmt.Println(script)
+	submitButton := widget.NewButton("Submit", func() {
+		script := struct {
+			Name   string
+			Source string
+		}{
+			Name:   nameEntry.Text,
+			Source: sourceEntry.Text,
 		}
+		// TODO: Submit Form value
+		fmt.Println(script)
+		newWindow.Close()
+		previousWindowRef.Show()
 
-	}, windowRef)
+	})
+
+	cancelButton := widget.NewButton("Cancel", func() {
+		newWindow.Close()
+		previousWindowRef.Show()
+	})
+
+	buttonContainer := container.NewHBox(layout.NewSpacer(), cancelButton, submitButton)
+
+	content := container.NewBorder(form, buttonContainer, nil, nil)
+	newWindow.SetContent(content)
+	newWindow.Show()
 }

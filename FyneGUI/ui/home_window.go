@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"fynegui/constant"
 	"fynegui/lib"
-	"log"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -17,13 +16,12 @@ func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
 
 	homeWindow := appInstance.NewWindow("App Started")
 	homeWindow.Resize(fyne.NewSize(constant.Width, constant.Height))
-	homeWindow.SetFixedSize(true) // Set fixed window size
+	// homeWindow.SetFixedSize(true) // Set fixed window size
 
 	addedAppsLabel := widget.NewLabel("Added Apps")
 	addedAppsLabel.TextStyle = fyne.TextStyle{Bold: true}
 
 	addAppButton := widget.NewButton("Add Apps", func() {
-		log.Println("Clicked")
 		ShowFormWindow(homeWindow)
 	})
 
@@ -85,7 +83,6 @@ func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
 
 	startAllButton := widget.NewButton("Start All", func() {
 		for _, app := range records {
-
 			app.Run()
 		}
 	})
@@ -95,4 +92,9 @@ func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
 	homeWindow.SetContent(appContainer)
 
 	return homeWindow
+}
+
+func addApsButton_onClick(addAppsbtn *widget.Button) {
+	addAppsbtn.Disable()
+
 }
