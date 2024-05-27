@@ -24,6 +24,7 @@ func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
 
 	addAppButton := widget.NewButton("Add Apps", func() {
 		log.Println("Clicked")
+		ShowFormWindow(homeWindow)
 	})
 
 	headerRow := container.NewHBox(addedAppsLabel, layout.NewSpacer(), addAppButton)
