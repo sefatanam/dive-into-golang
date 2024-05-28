@@ -12,11 +12,11 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
+func HomeWindow(appInstance fyne.App) fyne.Window {
 
 	homeWindow := appInstance.NewWindow("App Started")
 	homeWindow.Resize(fyne.NewSize(constant.Width, constant.Height))
-	// homeWindow.SetFixedSize(true) // Set fixed window size
+	homeWindow.SetFixedSize(true) // Set fixed window size
 
 	addedAppsLabel := widget.NewLabel("Added Apps")
 	addedAppsLabel.TextStyle = fyne.TextStyle{Bold: true}
@@ -29,7 +29,7 @@ func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
 
 	addedAppsTable := widget.NewTable(
 		func() (rows int, cols int) {
-			return len(records) + 1, 4
+			return len(lib.GetScripts()) + 1, 4
 		},
 		func() fyne.CanvasObject {
 			return container.NewHBox(widget.NewLabel("fallback content"))
@@ -47,14 +47,16 @@ func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
 					co.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel("Actions")}
 				}
 			} else {
-				record := records[tci.Row-1] // Adjust index because of header row
+				record := lib.GetScripts()[tci.Row-1] // Adjust index because of header row
 				switch tci.Col {
 				case 0:
 					co.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(record.GetDetail("Id"))}
 				case 1:
 					co.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(record.GetDetail("Name"))}
 				case 2:
-					co.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(record.GetDetail("Source"))}
+					sourceLabel := widget.NewLabelWithStyle(record.GetDetail("Source"), fyne.TextAlignLeading, fyne.TextStyle{Monospace: true})
+					sourceLabel.Resize(fyne.NewSize(150, 200)) // Adjust the width as needed
+					co.(*fyne.Container).Objects = []fyne.CanvasObject{sourceLabel}
 				case 3:
 					startIcon := widget.NewButtonWithIcon("", theme.MediaPlayIcon(), func() {
 						fmt.Printf("Start action for row %d\n", tci.Row)
@@ -71,10 +73,10 @@ func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
 	)
 
 	const minWidth float32 = 150
-	addedAppsTable.SetColumnWidth(0, 50)       // Set a fixed width for the first column
-	addedAppsTable.SetColumnWidth(1, minWidth) // Set a fixed width for the second column
-	addedAppsTable.SetColumnWidth(2, minWidth) // Set a fixed width for the third column
-	addedAppsTable.SetColumnWidth(3, minWidth) // Set a fixed width for the action column
+	addedAppsTable.SetColumnWidth(0, 50)         // Set a fixed width for the first column
+	addedAppsTable.SetColumnWidth(1, minWidth)   // Set a fixed width for the second column
+	addedAppsTable.SetColumnWidth(2, minWidth*2) // Set a fixed width for the third column
+	addedAppsTable.SetColumnWidth(3, minWidth/3) // Set a fixed width for the action column
 
 	addedAppsTable.StickyColumnCount = 0
 
@@ -82,7 +84,7 @@ func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
 	scrollContainer.SetMinSize(fyne.NewSize(constant.Width, constant.Height))
 
 	startAllButton := widget.NewButton("Start All", func() {
-		for _, app := range records {
+		for _, app := range lib.GetScripts() {
 			app.Run()
 		}
 	})
@@ -92,9 +94,4 @@ func HomeWindow(appInstance fyne.App, records []lib.App) fyne.Window {
 	homeWindow.SetContent(appContainer)
 
 	return homeWindow
-}
-
-func addApsButton_onClick(addAppsbtn *widget.Button) {
-	addAppsbtn.Disable()
-
 }

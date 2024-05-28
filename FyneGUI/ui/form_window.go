@@ -1,8 +1,8 @@
 package ui
 
 import (
-	"fmt"
 	"fynegui/constant"
+	"fynegui/lib"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -50,22 +50,21 @@ func ShowFormWindow(previousWindowRef fyne.Window) {
 		layout.NewSpacer(),
 	)
 	submitButton := widget.NewButton("Submit", func() {
-		script := struct {
-			Name   string
-			Source string
-		}{
+		script := lib.Script{
+			Id:     0,
 			Name:   nameEntry.Text,
 			Source: sourceEntry.Text,
 		}
-		// TODO: Submit Form value
-		fmt.Println(script)
+		script.AddScript()
 		newWindow.Close()
+		previousWindowRef.Content().Refresh()
 		previousWindowRef.Show()
 
 	})
 
 	cancelButton := widget.NewButton("Cancel", func() {
 		newWindow.Close()
+		previousWindowRef.Content().Refresh()
 		previousWindowRef.Show()
 	})
 
