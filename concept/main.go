@@ -2,7 +2,6 @@ package main
 
 import (
 	"concept/articles"
-	"concept/channel"
 	"fmt"
 )
 
@@ -216,7 +215,7 @@ func main() {
 	// WorkerPool()
 
 	// Basic Channel
-	channel.MainChannel()
+	// channel.MainChannel()
 
 	// newNums := channel.NewNumbers()
 	// newNums.Start()
