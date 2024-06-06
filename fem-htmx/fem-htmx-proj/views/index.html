@@ -20,8 +20,10 @@
 <script>
     document.addEventListener('DOMContentLoaded', (event)=>{
         document.body.addEventListener('htmx:beforeSwap', function(evt){
+           if(evt.detail.xhr.status===422){
             evt.detail.shouldSwap=true;
             evt.detail.isError=false;
+           }
         })
     })
 </script>
@@ -51,13 +53,27 @@
 {{block "display" .}}
     <div id="contacts" style="display: grid;" >
         {{range .Contacts}}
-            <div>
-                Name: <span>{{ .Name }}</span>
-                Email:<span>{{ .Email }}</span>
-            </div>
+        {{ template "contact" .}}
         {{end}}
     </div>
 {{end}}
+
+
+
+{{ block "contact" .}}
+<div>
+    Name: <span>{{ .Name }}</span>
+    Email:<span>{{ .Email }}</span>
+</div>
+{{ end }}
+
+
+
+{{ block "oob-contact" .}}
+    <div id="contacts" hx-swap-oob="afterbegin" >
+        {{ template "contact" .}}
+    </div>
+{{ end }}
 
 
 

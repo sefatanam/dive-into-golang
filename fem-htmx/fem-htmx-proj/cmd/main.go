@@ -120,8 +120,12 @@ func main() {
 			return c.Render(422, "form", formData)
 		}
 
-		page.Data.Contacts = append(page.Data.Contacts, NewContact(name, email))
-		return c.Render(200, "display", page)
+		contact := NewContact(name, email)
+		page.Data.Contacts = append(page.Data.Contacts, contact)
+		// return c.Render(200, "display", page.Data)
+
+		c.Render(200, "form", NewFormData())
+		return c.Render(200, "oob-contact", contact)
 	})
 
 	e.Logger.Fatal(e.Start("localhost:8080"))
