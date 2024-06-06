@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
     <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
 </head>
 
@@ -18,62 +18,67 @@
 
 </body>
 <script>
-    document.addEventListener('DOMContentLoaded', (event)=>{
-        document.body.addEventListener('htmx:beforeSwap', function(evt){
-           if(evt.detail.xhr.status===422){
-            evt.detail.shouldSwap=true;
-            evt.detail.isError=false;
-           }
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.body.addEventListener('htmx:beforeSwap', function (evt) {
+            if (evt.detail.xhr.status === 422) {
+                evt.detail.shouldSwap = true;
+                evt.detail.isError = false;
+            }
         })
     })
 </script>
+
 </html>
 {{end}}
 
 
 {{ block "count" .}}
-    Count {{ .Count}}
+Count {{ .Count}}
 {{ end}}
 
 {{ block "form" .}}
-    <form hx-swap="outerHTML" hx-post="/contacts">
-        <label for="name">name
-            <input type="text" name="name" {{if .Values.Name }} value="{{ .Values.Name }}" {{ end }}>
-        </label>
-        <label for="email">email
-            <input type="text" name="email" {{if .Values.Email }} value="{{ .Values.Email }}" {{ end }}>
-        </label>
-        {{ if .Errors.email }}
-            <div style="color: red;"> {{ .Errors.email }}</div>
-        {{ end }}
-        <button type="submit">Create Contact</button>
-    </form>
+<form hx-swap="outerHTML" hx-post="/contacts">
+    <label for="name">name
+        <input type="text" name="name" {{if .Values.Name }} value="{{ .Values.Name }}" {{ end }}>
+    </label>
+    <label for="email">email
+        <input type="text" name="email" {{if .Values.Email }} value="{{ .Values.Email }}" {{ end }}>
+    </label>
+    {{ if .Errors.email }}
+    <div style="color: red;"> {{ .Errors.email }}</div>
+    {{ end }}
+    <button type="submit">Create Contact</button>
+</form>
 {{end}}
 
 {{block "display" .}}
-    <div id="contacts" style="display: grid;" >
-        {{range .Contacts}}
-        {{ template "contact" .}}
-        {{end}}
-    </div>
+<div id="contacts" style="display: grid;">
+    {{range .Contacts}}
+    {{ template "contact" .}}
+    {{end}}
+</div>
 {{end}}
 
 
 
 {{ block "contact" .}}
-<div>
+<div style="display: flex;" id="contact-{{ .Id }}">
+
+    <button hx-indicator="#ci-{{ .Id }}" hx-target="#contact-{{ .Id }}" hx-swap="outerHTML" hx-delete="/contacts/{{ .Id }}">Delete</button>
+
     Name: <span>{{ .Name }}</span>
     Email:<span>{{ .Email }}</span>
+
+    <div id="ci-{{ .Id }}" class="htmx-indicator">
+        <img src="/images/bars.svg" alt="loading" style="width: 1rem;">
+    </div>
 </div>
 {{ end }}
 
 
 
 {{ block "oob-contact" .}}
-    <div id="contacts" hx-swap-oob="afterbegin" >
-        {{ template "contact" .}}
-    </div>
+<div id="contacts" hx-swap-oob="afterbegin">
+    {{ template "contact" .}}
+</div>
 {{ end }}
-
-
-
