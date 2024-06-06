@@ -62,9 +62,13 @@ Count {{ .Count}}
 
 
 {{ block "contact" .}}
-<div style="display: flex;" id="contact-{{ .Id }}">
+<div class="contact" style="display: flex;" id="contact-{{ .Id }}">
 
-    <button hx-indicator="#ci-{{ .Id }}" hx-target="#contact-{{ .Id }}" hx-swap="outerHTML" hx-delete="/contacts/{{ .Id }}">Delete</button>
+    <button 
+        hx-indicator="#ci-{{ .Id }}" 
+        hx-target="#contact-{{ .Id }}"
+        hx-swap="outerHTML swap:500ms" 
+        hx-delete="/contacts/{{ .Id }}">Delete</button>
 
     Name: <span>{{ .Name }}</span>
     Email:<span>{{ .Email }}</span>
@@ -72,6 +76,7 @@ Count {{ .Count}}
     <div id="ci-{{ .Id }}" class="htmx-indicator">
         <img src="/images/bars.svg" alt="loading" style="width: 1rem;">
     </div>
+    
 </div>
 {{ end }}
 
