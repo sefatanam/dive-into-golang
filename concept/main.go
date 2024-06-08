@@ -1,7 +1,7 @@
 package main
 
 import (
-	"concept/articles"
+	"concept/context"
 	"fmt"
 )
 
@@ -233,7 +233,10 @@ func main() {
 	// close(newNums.NumsChan)
 
 	// Articles Code
-	articles.RunArticles()
+	// articles.RunArticles()
+
+	// Context
+	context.RunCreateContext()
 }
 
 /* func Worker(id int, jobs <-chan int, results chan<- int) {
