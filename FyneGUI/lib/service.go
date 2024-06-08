@@ -5,9 +5,7 @@ type Store struct {
 }
 
 var store = Store{
-	Scripts: []App{
-		Script{Id: 1, Name: "Test", Source: "This is a simple text,This is a simple text,This is a simple text,This is a simple text"},
-	},
+	Scripts: []App{},
 }
 
 func GetScripts() []App {

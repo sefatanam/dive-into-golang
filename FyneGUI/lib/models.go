@@ -74,3 +74,11 @@ func (appInfo Script) GetDetail(propName string) string {
 	}
 	return fmt.Sprintf("%v", field.Interface())
 }
+
+func ShortenSentenceToFixChar(sentence string, charLen int) string {
+	length := len(sentence)
+	if length > charLen {
+		return "..." + sentence[length-30:]
+	}
+	return sentence
+}

@@ -14,14 +14,14 @@ import (
 
 func HomeWindow(appInstance fyne.App) fyne.Window {
 
-	homeWindow := appInstance.NewWindow("App Started")
+	homeWindow := appInstance.NewWindow("Script Starter")
 	homeWindow.Resize(fyne.NewSize(constant.Width, constant.Height))
 	homeWindow.SetFixedSize(true) // Set fixed window size
 
-	addedAppsLabel := widget.NewLabel("Added Apps")
+	addedAppsLabel := widget.NewLabel("Added Scripts")
 	addedAppsLabel.TextStyle = fyne.TextStyle{Bold: true}
 
-	addAppButton := widget.NewButton("Add Apps", func() {
+	addAppButton := widget.NewButton("Add Script", func() {
 		ShowFormWindow(homeWindow)
 	})
 
@@ -54,7 +54,8 @@ func HomeWindow(appInstance fyne.App) fyne.Window {
 				case 1:
 					co.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(record.GetDetail("Name"))}
 				case 2:
-					sourceLabel := widget.NewLabelWithStyle(record.GetDetail("Source"), fyne.TextAlignLeading, fyne.TextStyle{Monospace: true})
+
+					sourceLabel := widget.NewLabelWithStyle(lib.ShortenSentenceToFixChar(record.GetDetail("Source"), 30), fyne.TextAlignLeading, fyne.TextStyle{Monospace: true})
 					sourceLabel.Resize(fyne.NewSize(150, 200)) // Adjust the width as needed
 					co.(*fyne.Container).Objects = []fyne.CanvasObject{sourceLabel}
 				case 3:
