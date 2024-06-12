@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fynegui/lib"
 	"fynegui/ui"
 
 	"fyne.io/fyne/v2/app"
@@ -8,6 +9,7 @@ import (
 
 func main() {
 	appInstance := app.New()
-	ui.HomeWindow(appInstance).Show()
+	scripts := lib.GetScripts()
+	ui.HomeWindow(appInstance, scripts).Show()
 	appInstance.Run()
 }

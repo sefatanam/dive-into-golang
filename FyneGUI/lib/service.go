@@ -8,8 +8,8 @@ var store = Store{
 	Scripts: []App{},
 }
 
-func GetScripts() []App {
-	return store.Scripts
+func GetScripts() *[]App {
+	return &store.Scripts
 }
 
 func (script *Script) AddScript() {

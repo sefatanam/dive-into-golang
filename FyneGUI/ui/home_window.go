@@ -12,7 +12,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func HomeWindow(appInstance fyne.App) fyne.Window {
+func HomeWindow(appInstance fyne.App, scriptRefs *[]lib.App) fyne.Window {
 
 	homeWindow := appInstance.NewWindow("Script Starter")
 	homeWindow.Resize(fyne.NewSize(constant.Width, constant.Height))
@@ -29,7 +29,7 @@ func HomeWindow(appInstance fyne.App) fyne.Window {
 
 	addedAppsTable := widget.NewTable(
 		func() (rows int, cols int) {
-			return len(lib.GetScripts()) + 1, 4
+			return len(*scriptRefs) + 1, 4
 		},
 		func() fyne.CanvasObject {
 			return container.NewHBox(widget.NewLabel("fallback content"))
@@ -47,7 +47,7 @@ func HomeWindow(appInstance fyne.App) fyne.Window {
 					co.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel("Actions")}
 				}
 			} else {
-				record := lib.GetScripts()[tci.Row-1] // Adjust index because of header row
+				record := (*scriptRefs)[tci.Row-1] // Adjust index because of header row
 				switch tci.Col {
 				case 0:
 					co.(*fyne.Container).Objects = []fyne.CanvasObject{widget.NewLabel(record.GetDetail("Id"))}
@@ -85,7 +85,7 @@ func HomeWindow(appInstance fyne.App) fyne.Window {
 	scrollContainer.SetMinSize(fyne.NewSize(constant.Width, constant.Height))
 
 	startAllButton := widget.NewButton("Start All", func() {
-		for _, app := range lib.GetScripts() {
+		for _, app := range *scriptRefs {
 			app.Run()
 		}
 	})
