@@ -1,38 +1,16 @@
-# Drive into Golang
+# Dive into Golang
 
-You will see the raw codes that I will write in Go. Create issue, gives me motivation.
-[__Go Roadmap from roadmap.sh__](https://roadmap.sh/golang) 
+![License](https://img.shields.io/github/license/sefatanam/dive-into-golang)
 
-### Repl of this Repo
+Raw Go practice covering various aspects of the language.
 
-1. [Hands dirty for understanding the basic](Basics/booking-app)
-2. [Concept base deep drive](concept)
-    - [Pointers](concept/pointers.go)
-    - [Struct](concept/structs.go)
-    - [Time](concept/time.go)
-3. [Http server from scratch](httpserver/main.go)
-4. [Be fluent in DSA & Algo by solving LeetCode problem](LeetCode)
-    - [Binary Search](LeetCode/BinarySearch.go)
-    - [Cyclic Sort](LeetCode/CyclicSort.go)
-    - [Recursion](LeetCode/Recursion.go)
+## Table of Contents
 
-
-5. [Todo-API](/Todo-API)<br>
-
-   #### Features
-
-   - GetTodos
-   - GetTodo
-   - PostTodo
-    - ToggleStatus
-
-   #### How to run
-
-    * Machine must have to installed [GO](https://go.dev/)
-    * Go to Todo-API folder and run `go run main.go`
-    * If everyting goes well, project is running on port `3000` as mentioned into `main.go` file.
-
-   [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/8196637-d4c60aa9-b0b5-4640-90b3-e2e150a0ed6d?action=collection%2Ffork&collection-url=entityId%3D8196637-d4c60aa9-b0b5-4640-90b3-e2e150a0ed6d%26entityType%3Dcollection%26workspaceId%3D08445e69-71f6-45bd-bc3e-55df1a0de819)
-
-   _Note: Build with `go version go1.19 linux/amd64`, Used [gin](https://pkg.go.dev/github.com/gin-gonic/gin@v1.8.1)_
-   package for developing REST endpoints.
+1. **Basic-Concepts**-  Basic Go concepts including data types, control structures, functions, and error handling.
+2. **Pointers**- Examples on using pointers, passing by reference, and memory management.
+3. **Structs**- Working with structs, methods, and embedding.
+4. **Time**- Handling time and dates, including parsing, formatting, and manipulation.
+5. **Todo-API**- A RESTful API for managing a todo list, demonstrating CRUD operations.
+6. **Data-Structures**- Implementations of linked lists, stacks, and queues.
+7. **Algorithms**- Sorting, searching, and algorithmic problems.
+8. **LeetCode**- Solutions to LeetCode problems for coding practice.
