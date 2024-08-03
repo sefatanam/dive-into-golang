@@ -16,7 +16,7 @@ func HomeWindow(appInstance fyne.App, scriptRefs *[]lib.App) fyne.Window {
 
 	homeWindow := appInstance.NewWindow("Script Starter")
 	homeWindow.Resize(fyne.NewSize(constant.Width, constant.Height))
-	homeWindow.SetFixedSize(true) // Set fixed window size
+	homeWindow.SetFixedSize(true)
 
 	addedAppsLabel := widget.NewLabel("Added Scripts")
 	addedAppsLabel.TextStyle = fyne.TextStyle{Bold: true}
