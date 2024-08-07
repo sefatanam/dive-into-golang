@@ -3,8 +3,10 @@ package controller
 import (
 	"api/models"
 	"encoding/json"
+	"io"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func HandleTodo(w http.ResponseWriter, r *http.Request) {
@@ -24,8 +26,18 @@ func HandleTodo(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid user id.", http.StatusBadRequest)
 			return
 		}
-		todo := models.Todo{Id: 11, Name: "Post", UserId: userId, Description: "Just now posted"}
+		// todo := models.Todo{Id: 11, Name: "Post", UserId: userId, Description: "Just now posted"}
+		todo, isSuccess := parseTodo(r)
+
+		if !isSuccess {
+			http.Error(w, "POST Data is incorrect.", http.StatusBadRequest)
+			return
+		}
+
+		todo.UserId = userId
+		todo.CreatedOn = time.Now().String()
 		addTodo(todo)
+
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(todo)
 
@@ -57,4 +69,22 @@ func parseUserId(r *http.Request) (int, bool) {
 		return 0, false
 	}
 	return userId, true
+}
+
+func parseTodo(r *http.Request) (models.Todo, bool) {
+
+	todo := models.Todo{}
+
+	body, error := io.ReadAll(r.Body)
+	// make sure to cleanup
+	r.Body.Close()
+	if error != nil {
+		return todo, false
+	}
+
+	if err := json.Unmarshal(body, &todo); err != nil {
+		return todo, false
+	}
+
+	return todo, true
 }
