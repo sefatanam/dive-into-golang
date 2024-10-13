@@ -80,6 +80,22 @@ func main() {
 		SaveTask(tasks, fileName)
 		fmt.Println("Task updated successfully (Id :)", id, ")")
 
+	case "delete":
+		if len(os.Args) < 3 {
+			fmt.Println("Usage task-cli delete [id]")
+			return
+		}
+
+		id, _ := strconv.Atoi(os.Args[2])
+		taskIndex := GetTaskIndexById(tasks, id)
+		if taskIndex == -1 {
+			fmt.Println("Task with the ID: ", id, " not found.")
+			return
+		}
+
+		tasks = append(tasks[:taskIndex], tasks[taskIndex+1:]...)
+		SaveTask(tasks, fileName)
+		fmt.Println("Task deleted successfully (Id :)", id, ")")
 	default:
 		fmt.Println("Unknown command:", command)
 	}
