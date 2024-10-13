@@ -66,3 +66,12 @@ func SaveTask(tasks []Task, filename string) error {
 
 	return os.WriteFile(filename, data, 0644)
 }
+
+func GetTaskIndexById(tasks []Task, id int) int {
+	for index, task := range tasks {
+		if task.Id == id {
+			return index
+		}
+	}
+	return -1
+}
