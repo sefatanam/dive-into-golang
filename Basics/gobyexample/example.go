@@ -33,10 +33,14 @@ func main() {
 		For example, fmt.Println is a common variadic function
 	*/
 
-	sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-	sum(1, 2, 3, 4)
-	sum(1, 2)
+	// sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+	// sum(1, 2, 3, 4)
+	// sum(1, 2)
 
 	/*Next Class https://gobyexample.com/closures*/
-
+	i := 1
+	for ok := true; ok; ok = (i != 10) {
+		fmt.Println(i)
+    i++
+	}
 }
