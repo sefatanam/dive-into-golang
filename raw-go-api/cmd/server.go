@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sefatanam/rga/handlers"
+	"github.com/sefatanam/rga/middleware"
 	"github.com/sefatanam/rga/util"
 )
 
 func Serve() {
 	mux := http.NewServeMux()
 
-	mux.Handle("GET /products", http.HandlerFunc(handlers.GetProducts))
-	mux.Handle("POST /products", http.HandlerFunc(handlers.CreateProduct))
+	manager := middleware.NewManager()
+	manager.Use(middleware.Emoji, middleware.Logger)
+
+	initRoutes(mux, manager)
 	globalRouter := util.GlobalRouter(mux)
 
 	fmt.Println("Backend running and listening on port 8080")
