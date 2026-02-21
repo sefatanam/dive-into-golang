@@ -1,9 +1,8 @@
 package main
 
-import (
-	"example.com/greetings/builder"
-)
+import "gotour"
 
 func main() {
-	builder.RunBuilder()
+
+	MyFloat myfloat = 453.2
 }

@@ -1,5 +1,4 @@
 package abstract
-
 import "fmt"
 
 type Door interface {

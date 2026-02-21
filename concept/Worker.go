@@ -18,7 +18,6 @@ type Worker struct {
 }
 
 func NewWorker(id int, jobQueue chan Job, wg *sync.WaitGroup) *Worker {
-
 	return &Worker{
 		Id:        id,
 		JobQueue:  jobQueue,
@@ -29,7 +28,6 @@ func NewWorker(id int, jobQueue chan Job, wg *sync.WaitGroup) *Worker {
 
 func (w *Worker) Start() {
 	go func() {
-
 		defer w.WaitGroup.Done()
 		for {
 			select {
@@ -88,7 +86,6 @@ func (p *Pool) Stop() {
 }
 
 func WorkerPool() {
-
 	pool := NewPool(3)
 	pool.Start()
 
